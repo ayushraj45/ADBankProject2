@@ -1,43 +1,45 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class BankApp {
+    Bank newBank = new Bank();
+
     public void bankAppRunner() {
 
-        Bank newBank = new Bank();
+        ArrayList<Integer> accountNumbers = csvToBankAccounts();
+        //newBank.printAllAccounts();
 
-        int account1Number = newBank.createAccount("Ayush", 100000.0);
-        int account2Number = newBank.createAccount("Tom", 100000.0);
-        int account3Number = newBank.createAccount("John", 100000.0);
-        int account4Number = newBank.createAccount("Roney", 100000.0);
-
-        IAccount newAccount2 = newBank.getAccountByNumber(account2Number);
-        IAccount newAccount3 = newBank.getAccountByNumber(account3Number);
-        IAccount newAccount1 = newBank.getAccountByNumber(account1Number);
-        IAccount newAccount4 = newBank.getAccountByNumber(account4Number);
-
-
-        System.out.println(newAccount3);
-
-        System.out.println(newAccount4.getAccountNumber());
-        System.out.println(newAccount4.getAccountHolderName());
-
-        System.out.println(newAccount4.toString());
-
-        boolean moneyIsTranfered;
-
-        System.out.println(newAccount4.getBalance());
-
-
-        moneyIsTranfered = newBank.transferMoney(newAccount1, newAccount4, 299000.67);
-        if (moneyIsTranfered) System.out.println("it worked!");
-        else System.out.println("It didn't work");
-
-
-        System.out.println(newAccount3.getBalance());
-
+        IAccount newAccount1 = newBank.getAccountByNumber(accountNumbers.get(0));
+        IAccount newAccount2 = newBank.getAccountByNumber(accountNumbers.get(4));
         System.out.println(newAccount1.getBalance());
-
-        System.out.println(newAccount4.getBalance());
-
-
+        System.out.println(newAccount2.getBalance());
+        boolean didItWork = false;
+        didItWork = newBank.transferMoney(newAccount2, newAccount1, 500.00);
+        if (didItWork) {
+            System.out.println("Yes");
+        }
+        System.out.println(newAccount1.getBalance());
+        System.out.println(newAccount2.getBalance());
 
     }
+
+    public ArrayList<Integer> csvToBankAccounts() {
+        ArrayList<Integer> accountNumbers = new ArrayList<>();
+        try (Scanner fileScanner = new Scanner(new File("src/main/resources/BankAccounts.csv"))) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] accountDetails = line.split(", ");
+                int accountNumber = newBank.createAccount(accountDetails[0], Double.parseDouble(accountDetails[1]));
+                accountNumbers.add(accountNumber);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Hey, we couldn't find the file!");
+        }
+        return accountNumbers;
+    }
+
 }
+
+

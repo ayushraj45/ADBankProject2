@@ -41,4 +41,11 @@ public class Bank {
             return false;
         }
     }
+
+    void printAllAccounts() {
+        for (IAccount account: accounts.values()
+             ) {
+            System.out.println(account.toString());
+        }
+    }
 }
