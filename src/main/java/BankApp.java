@@ -16,6 +16,11 @@ public class BankApp {
 
         System.out.println(newAccount3);
 
+        System.out.println(newAccount4.getAccountNumber());
+        System.out.println(newAccount4.getAccountHolderName());
+
+        System.out.println(newAccount4.toString());
+
         boolean moneyIsTranfered;
 
         System.out.println(newAccount4.getBalance());
